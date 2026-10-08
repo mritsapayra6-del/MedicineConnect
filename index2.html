@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MedicineConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef7f2;
+            color: #222;
+        }
+
+        header {
+            background: #087f5b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #087f5b;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #087f5b;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #056b4d;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #e7f5ee;
+        }
+
+        .step {
+            padding: 12px;
+            margin: 8px 0;
+            border-left: 5px solid #ccc;
+            background: #f5f5f5;
+        }
+
+        .active {
+            border-left-color: #087f5b;
+            background: #e6f7ef;
+            font-weight: bold;
+        }
+
+        .warning {
+            margin-top: 15px;
+            padding: 12px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>💊 MedicineConnect</h1>
+    <p>Connect unused medicines with authorized organizations</p>
+</header>
+
+<div class="container">
+
+    <!-- Medicine Submission -->
+    <div class="card">
+
+        <h2>List Your Medicine</h2>
+
+        <label>Your Name</label>
+        <input type="text" id="name" placeholder="Enter your name">
+
+        <label>Medicine Name</label>
+        <input type="text" id="medicine" placeholder="Enter medicine name">
+
+        <label>Quantity</label>
+        <input type="number" id="quantity" placeholder="Number of packs">
+
+        <label>Expiry Date</label>
+        <input type="date" id="expiry">
+
+        <label>Medicine Condition</label>
+        <select id="condition">
+            <option value="">Select condition</option>
+            <option value="sealed">Sealed / Unopened</option>
+            <option value="opened">Opened</option>
+            <option value="damaged">Damaged Packaging</option>
+        </select>
+
+        <button onclick="submitMedicine()">
+            Submit Medicine
+        </button>
+
+        <div class="warning">
+            ⚠️ This system does not approve medicines for donation.
+            Final eligibility must be verified by an authorized organization
+            or qualified professional.
+        </div>
+
+    </div>
+
+
+    <!-- Workflow -->
+    <div class="card hidden" id="workflowCard">
+
+        <h2>Donation Workflow</h2>
+
+        <div class="step active" id="step1">
+            1️⃣ Medicine Submitted
+        </div>
+
+        <div class="step" id="step2">
+            2️⃣ Eligibility Review
+        </div>
+
+        <div class="step" id="step3">
+            3️⃣ Organization Matched
+        </div>
+
+        <div class="step" id="step4">
+            4️⃣ Collection Scheduled
+        </div>
+
+        <div class="step" id="step5">
+            5️⃣ Collection Completed
+        </div>
+
+        <div class="status" id="status">
+            Status: Submitted
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function submitMedicine() {
+
+    const name = document.getElementById("name").value;
+    const medicine = document.getElementById("medicine").value;
+    const quantity = document.getElementById("quantity").value;
+    const expiry = document.getElementById("expiry").value;
+    const condition = document.getElementById("condition").value;
+
+    if (
+        name === "" ||
+        medicine === "" ||
+        quantity === "" ||
+        expiry === "" ||
+        condition === ""
+    ) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    document.getElementById("workflowCard")
+        .classList.remove("hidden");
+
+    document.getElementById("status").innerHTML =
+        "Status: Medicine submitted successfully.";
+
+    startWorkflow();
+}
+
+
+function startWorkflow() {
+
+    const steps = [
+        "step1",
+        "step2",
+        "step3",
+        "step4",
+        "step5"
+    ];
+
+    const messages = [
+        "Status: Medicine submitted.",
+        "Status: Under eligibility review.",
+        "Status: Waiting for authorized organization confirmation.",
+        "Status: Collection scheduled.",
+        "Status: Collection completed."
+    ];
+
+    let current = 0;
+
+    const interval = setInterval(function() {
+
+        if (current >= steps.length) {
+            clearInterval(interval);
+            return;
+        }
+
+        steps.forEach(function(step) {
+            document.getElementById(step)
+                .classList.remove("active");
+        });
+
+        document.getElementById(steps[current])
+            .classList.add("active");
+
+        document.getElementById("status").innerHTML =
+            messages[current];
+
+        current++;
+
+    }, 2000);
+}
+
+</script>
+
+</body>
+</html>

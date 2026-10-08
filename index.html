@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Software</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            padding: 50px;
+            background: #f2f7ff;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>My First Software</h1>
+    <p>Click the button to start.</p>
+
+    <button onclick="startApp()">Start</button>
+
+    <div id="result"></div>
+
+    <script>
+        function startApp() {
+            document.getElementById("result").innerHTML =
+                "Software is working successfully! 🎉";
+        }
+    </script>
+
+</body>
+</html>
